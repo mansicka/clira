@@ -1,0 +1,45 @@
+# Go build artifacts
+/bin/
+/obj/
+/tmp/
+
+# Go module files
+/vendor/
+
+# Executable binary files
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+.vscode/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Test result directories
+*.test/
+
+# Coverage files
+*.coverprofile
+
+# Dependency directories
+/go/pkg/
+/go/bin/
+
+# Build directories 
+build/
+
+# Other temporary files
+*.log
+*.tmp
+
+# Env variables and .env files
+.env
+
+.editorconfig
+
+# Custom application-specific or config files
+config.json
