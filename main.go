@@ -21,6 +21,7 @@ func main() {
 	rootDir := os.Getenv("CLIRA_ROOTDIR")
 
 	if rootDir == "" {
+		panic("ss")
 		var err error
 		rootDir, err = os.Getwd()
 		if err != nil {
@@ -51,7 +52,15 @@ func main() {
 	appState := state.GetState()
 	user := appState.GetUser()
 
-	app, pages := ui.NewApp()
+	uiManager := ui.NewUIManager()
+
+	uiManager.AddView("main_menu", views.ShowMainMenu(uiManager.App, uiManager.Pages, uiManager.SwitchToView))
+	uiManager.AddView("create_organization", views.ShowCreateOrganizationForm(uiManager.App, uiManager.Pages, uiManager.SwitchToView))
+	uiManager.AddView("create_admin_user", views.ShowCreateAdminUserForm(uiManager.App, uiManager.Pages, uiManager.SwitchToView))
+	uiManager.AddView("login", views.ShowLoginPrompt(uiManager.App, uiManager.Pages, uiManager.SwitchToView))
+	uiManager.AddView("create_project", views.ShowCreateProjectForm(uiManager.App, uiManager.Pages, uiManager.SwitchToView))
+	uiManager.AddView("edit_project", views.ShowEditProjectForm(uiManager.App, uiManager.Pages, uiManager.SwitchToView))
+	uiManager.AddView("project_list", views.ShowProjectList(uiManager.App, uiManager.Pages, uiManager.SwitchToView))
 
 	orgData, err := organization.LoadOrganization()
 	if err != nil || orgData == nil {
