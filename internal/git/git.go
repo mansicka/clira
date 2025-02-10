@@ -14,30 +14,38 @@ import (
 func InitializeGitRepository() error {
 	storageInstance, err := storage.GetStorage()
 	if err != nil {
-		return fmt.Errorf("failed to get storage instance: %v", err)
+		return fmt.Errorf("failed to get storage instance: %w", err)
 	}
 
-	repoPath := storageInstance.RootDir
-
-	if exists, _ := RepositoryExists(); exists {
-		fmt.Println("Git repository already exists.")
-		return nil
-	}
-
-	_, err = git.PlainInit(repoPath, false)
+	repositoryExists, err := RepositoryExists()
 	if err != nil {
-		return fmt.Errorf("git init failed: %w", err)
+		return fmt.Errorf("error checking if repository exists: %w", err)
 	}
 
-	fmt.Println("Initialized new Git repository in", repoPath)
+	if !repositoryExists {
+		_, err := git.PlainInit(storageInstance.RootDir, false)
+		if err != nil {
+			return fmt.Errorf("git init failed: %w", err)
+		}
+		fmt.Println("Initialized new Git repository")
+	}
 
 	if err := CreateGitIgnore(); err != nil {
 		return fmt.Errorf("error creating .gitignore: %w", err)
 	}
 
-	err = DoCommit("Initialized UGH repository")
+	hasChanges, err := HasUncommittedChanges()
 	if err != nil {
-		return fmt.Errorf("error committing initial state: %w", err)
+		return fmt.Errorf("error checking git status: %w", err)
+	}
+
+	if hasChanges {
+		err = DoCommit("Initialized Clira repository")
+		if err != nil {
+			return fmt.Errorf("error committing initial state: %w", err)
+		}
+	} else {
+		fmt.Println("No changes to commit.")
 	}
 
 	return nil
@@ -99,8 +107,8 @@ func DoCommit(message string) error {
 
 	_, err = wt.Commit(message, &git.CommitOptions{
 		Author: &object.Signature{
-			Name:  "UGH Auto Commit",
-			Email: "auto@ugh.git",
+			Name:  "Clira Auto Commit",
+			Email: "auto@clira.git",
 			When:  time.Now(),
 		},
 	})
@@ -108,7 +116,7 @@ func DoCommit(message string) error {
 		return fmt.Errorf("failed to commit: %v", err)
 	}
 
-	fmt.Println("✅ Commit successful:", message)
+	fmt.Println("commit successful:", message)
 	return nil
 }
 
@@ -153,7 +161,7 @@ func CreateGitIgnore() error {
 	}
 
 	gitignorePath := filepath.Join(storageInstance.RootDir, ".gitignore")
-	gitignoreContent := "ugh*\n"
+	gitignoreContent := "clira*\n"
 
 	if !storageInstance.FileExists(gitignorePath) {
 		return storageInstance.WriteFile(".gitignore", []byte(gitignoreContent))
@@ -167,4 +175,28 @@ func DoCommitAndPush(message string) error {
 		return err
 	}
 	return DoPush()
+}
+
+func HasUncommittedChanges() (bool, error) {
+	storageInstance, err := storage.GetStorage()
+	if err != nil {
+		return false, fmt.Errorf("failed to get storage instance: %w", err)
+	}
+
+	repo, err := git.PlainOpen(storageInstance.RootDir)
+	if err != nil {
+		return false, fmt.Errorf("failed to open git repository: %w", err)
+	}
+
+	wt, err := repo.Worktree()
+	if err != nil {
+		return false, fmt.Errorf("failed to get git worktree: %w", err)
+	}
+
+	status, err := wt.Status()
+	if err != nil {
+		return false, fmt.Errorf("failed to get git status: %w", err)
+	}
+
+	return !status.IsClean(), nil
 }
