@@ -4,9 +4,9 @@ import (
 	"fmt"
 
 	"github.com/gdamore/tcell/v2"
-	"github.com/mansicka/ugh/globals"
-	"github.com/mansicka/ugh/internal/organization"
-	"github.com/mansicka/ugh/internal/state"
+	"github.com/mansicka/clira/globals"
+	"github.com/mansicka/clira/internal/organization"
+	"github.com/mansicka/clira/internal/state"
 	"github.com/rivo/tview"
 )
 

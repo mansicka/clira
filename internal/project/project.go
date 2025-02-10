@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/mansicka/ugh/internal/storage"
+	"github.com/mansicka/clira/internal/storage"
 )
 
 type Project struct {

@@ -3,8 +3,8 @@ package views
 import (
 	"fmt"
 
-	"github.com/mansicka/ugh/internal/project"
-	//"github.com/mansicka/ugh/internal/state"
+	"github.com/mansicka/clira/internal/project"
+	//"github.com/mansicka/clira/internal/state"
 	"github.com/rivo/tview"
 )
 

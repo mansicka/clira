@@ -6,7 +6,7 @@ require (
 	github.com/gdamore/tcell/v2 v2.8.1
 	github.com/go-git/go-git/v5 v5.13.2
 	github.com/joho/godotenv v1.5.1
-	github.com/mansicka/ugh v0.0.0-20250209214605-d8f4fe3e0ccc
+	github.com/mansicka/clira v0.0.0-20250209214605-d8f4fe3e0ccc
 	github.com/rivo/tview v0.0.0-20241227133733-17b7edb88c57
 	golang.org/x/crypto v0.33.0
 )

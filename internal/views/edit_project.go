@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/mansicka/ugh/internal/project"
-	"github.com/mansicka/ugh/internal/ui"
-	"github.com/mansicka/ugh/internal/util"
+	"github.com/mansicka/clira/internal/project"
+	"github.com/mansicka/clira/internal/ui"
+	"github.com/mansicka/clira/internal/util"
 	"github.com/rivo/tview"
 )
 

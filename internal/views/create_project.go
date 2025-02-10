@@ -3,8 +3,8 @@ package views
 import (
 	"log"
 
-	"github.com/mansicka/ugh/internal/project"
-	"github.com/mansicka/ugh/internal/ui"
+	"github.com/mansicka/clira/internal/project"
+	"github.com/mansicka/clira/internal/ui"
 	"github.com/rivo/tview"
 )
 
