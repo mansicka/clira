@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"os"
 	"time"
 
 	"github.com/mansicka/rtpms/internal/storage"
@@ -19,12 +18,6 @@ type Organization struct {
 }
 
 var orgFile string = "organization.json"
-
-// FileExists checks if a file exists
-func FileExists(filename string) bool {
-	_, err := os.Stat(filename)
-	return !os.IsNotExist(err)
-}
 
 // LoadOrganization safely loads organization data
 func LoadOrganization() (*Organization, error) {

@@ -1,4 +1,4 @@
-package views
+package view
 
 import (
 	"fmt"
@@ -7,10 +7,11 @@ import (
 	"github.com/mansicka/rtpms/internal/project"
 	"github.com/mansicka/rtpms/internal/ui"
 	"github.com/mansicka/rtpms/internal/util"
+	"github.com/mansicka/rtpms/internal/view/modal"
 	"github.com/rivo/tview"
 )
 
-func ShowEditProjectForm(app *tview.Application, pages *tview.Pages, proj project.Project) {
+func ShowEditProjectForm(ui *ui.UIManager, proj project.Project) {
 	form := tview.NewForm().
 		AddInputField("Project Name", proj.Name, 50, nil, nil).
 		AddInputField("Project Key", proj.ProjectKey, 10, nil, nil).
@@ -49,16 +50,15 @@ func ShowEditProjectForm(app *tview.Application, pages *tview.Pages, proj projec
 
 		err := project.EditProject(newProject)
 		if err != nil {
-			ui.ShowErrorModal(app, pages, fmt.Sprintf("Failed to save project: %s", err), "create_project")
+			modal.ShowErrorModal(ui, fmt.Sprintf("Failed to save project: %s", err))
 		}
 
-		ShowProjectList(app, pages)
+		InitProjectList(ui)
 	}).
 		AddButton("Cancel", func() {
-			ShowProjectList(app, pages)
+			InitProjectList(ui)
 		})
 
 	form.SetTitle(fmt.Sprintf("Edit project: %s - %s", proj.ProjectKey, proj.Name)).SetBorder(true)
-	pages.AddPage("edit_project", form, true, true)
-	app.SetRoot(form, true)
+	ui.AddView("edit_project", form)
 }

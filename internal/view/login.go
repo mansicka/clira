@@ -1,4 +1,4 @@
-package views
+package view
 
 import (
 	"fmt"
@@ -8,15 +8,15 @@ import (
 	"github.com/mansicka/rtpms/internal/state"
 	"github.com/mansicka/rtpms/internal/ui"
 	"github.com/mansicka/rtpms/internal/user"
+	"github.com/mansicka/rtpms/internal/view/modal"
 	"github.com/rivo/tview"
 )
 
 // ShowLoginPrompt displays a login prompt if no user is logged in
-func ShowLoginPrompt(app *tview.Application, pages *tview.Pages) {
+func ShowLoginPrompt(ui *ui.UIManager) {
 	organization, err := organization.LoadOrganization()
 	if err != nil {
-		ui.ShowErrorModal(app, pages, "Getting organization data failed. Probably corrupted json. Good luck!",
-			"login")
+		modal.ShowErrorModal(ui, "Getting organization data failed. Probably corrupted json. Good luck!")
 		return
 	}
 
@@ -34,24 +34,18 @@ func ShowLoginPrompt(app *tview.Application, pages *tview.Pages) {
 
 		loggedInUser, err := user.LoginUser(username, password)
 		if err != nil {
-			errorModal := tview.NewModal().
-				SetText(fmt.Sprintf("Login failed: %s", err)).
-				AddButtons([]string{"OK"}).
-				SetDoneFunc(func(buttonIndex int, buttonLabel string) {
-					app.SetRoot(form, true).SetFocus(form)
-				})
-			app.SetRoot(errorModal, true).SetFocus(errorModal)
+			modal.ShowErrorModal(ui, fmt.Sprintf("Login failed: %s", err))
 			return
 		}
 
 		appState := state.GetState()
 		appState.SetUser(loggedInUser)
 
-		ShowMainMenu(app, pages)
-		pages.SwitchToPage("main_menu")
+		InitMainMenu(ui)
+		ui.SwitchToView("main_menu")
 	}).
 		AddButton("Exit", func() {
-			app.Stop()
+			modal.ShowExitConfirmationModal(ui)
 		}).
 		SetTitle("User Login").
 		SetBorder(true)
@@ -61,5 +55,5 @@ func ShowLoginPrompt(app *tview.Application, pages *tview.Pages) {
 		AddItem(header, 16, 1, false).
 		AddItem(form, 0, 1, true)
 
-	pages.AddPage("login", layout, true, false)
+	ui.AddView("login", layout)
 }

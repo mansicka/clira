@@ -54,7 +54,8 @@ func (s *Storage) WriteFile(filePath string, data []byte) error {
 }
 
 func (s *Storage) FileExists(filePath string) bool {
-	_, err := os.Stat(filePath)
+	fullPath := filepath.Join(s.RootDir, filePath)
+	_, err := os.Stat(fullPath)
 	return !os.IsNotExist(err)
 }
 

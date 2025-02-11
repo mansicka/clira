@@ -1,4 +1,4 @@
-package views
+package view
 
 import (
 	"fmt"
@@ -6,10 +6,11 @@ import (
 	"github.com/mansicka/rtpms/internal/project"
 	"github.com/mansicka/rtpms/internal/state"
 	"github.com/mansicka/rtpms/internal/ui"
+	"github.com/mansicka/rtpms/internal/view/modal"
 	"github.com/rivo/tview"
 )
 
-func ShowProjectList(app *tview.Application, pages *tview.Pages) {
+func InitProjectList(uiManager *ui.UIManager) {
 	appState := state.GetState()
 
 	projectList := tview.NewList().ShowSecondaryText(false)
@@ -20,7 +21,7 @@ func ShowProjectList(app *tview.Application, pages *tview.Pages) {
 
 	projects, err := project.GetAllProjects()
 	if err != nil {
-		ui.ShowErrorModal(app, pages, "Failed to get projects", "project_list")
+		modal.ShowErrorModal(uiManager, "Failed to get projects")
 		return
 	}
 
@@ -39,7 +40,7 @@ func ShowProjectList(app *tview.Application, pages *tview.Pages) {
 		projectList.SetSelectedFunc(func(index int, mainText, secondaryText string, shortcut rune) {
 			if index >= 0 && index < len(projects) {
 				appState.SetProject(&projects[index])
-				ShowEditProjectForm(app, pages, projects[index])
+				ShowEditProjectForm(uiManager, projects[index])
 			}
 		})
 	} else {
@@ -50,12 +51,12 @@ func ShowProjectList(app *tview.Application, pages *tview.Pages) {
 
 	createProjectButton := tview.NewButton(" Create New Project ").
 		SetSelectedFunc(func() {
-			ShowCreateProjectForm(app, pages)
+			uiManager.SwitchToView("create_project")
 		})
 
 	backButton := tview.NewButton(" Back to Main Menu ").
 		SetSelectedFunc(func() {
-			ShowMainMenu(app, pages)
+			uiManager.SwitchToView("main_menu")
 		})
 
 	footer := tview.NewTextView().
@@ -79,8 +80,7 @@ func ShowProjectList(app *tview.Application, pages *tview.Pages) {
 		AddItem(buttons, 3, 1, false).
 		AddItem(footer, 1, 1, false)
 
-	pages.AddPage("project_list", layout, true, true)
-	app.SetRoot(layout, true).SetFocus(projectList)
+	uiManager.AddView("project_list", layout)
 }
 
 func updateProjectDetails(detailsView *tview.TextView, proj *project.Project) {

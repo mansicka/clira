@@ -1,16 +1,17 @@
-package views
+package view
 
 import (
 	"fmt"
 
-	"github.com/gdamore/tcell/v2"
 	"github.com/mansicka/rtpms/globals"
 	"github.com/mansicka/rtpms/internal/organization"
 	"github.com/mansicka/rtpms/internal/state"
+	"github.com/mansicka/rtpms/internal/ui"
+	"github.com/mansicka/rtpms/internal/view/modal"
 	"github.com/rivo/tview"
 )
 
-func ShowMainMenu(app *tview.Application, pages *tview.Pages) {
+func InitMainMenu(uiManager *ui.UIManager) {
 	appState := state.GetState()
 	user := appState.GetUser()
 	projectPtr := appState.GetProject()
@@ -38,7 +39,7 @@ func ShowMainMenu(app *tview.Application, pages *tview.Pages) {
 
 	menu := tview.NewList().
 		AddItem("🗂️  Projects", "Manage projects", 'p', func() {
-			ShowProjectList(app, pages)
+			InitProjectList(uiManager)
 		}).
 		AddItem("🔃  Sprints", "Manage sprints", 's', func() {
 		}).
@@ -49,7 +50,7 @@ func ShowMainMenu(app *tview.Application, pages *tview.Pages) {
 		AddItem("🛠️  Configuration", "Configure application", 'c', func() {
 		}).
 		AddItem("❌  Exit", "Quit application", 'q', func() {
-			app.Stop()
+			modal.ShowExitConfirmationModal(uiManager)
 		})
 
 	menu.SetSelectedBackgroundColor(tview.Styles.PrimitiveBackgroundColor)
@@ -65,13 +66,5 @@ func ShowMainMenu(app *tview.Application, pages *tview.Pages) {
 		AddItem(menu, 0, 1, true).
 		AddItem(footer, 1, 1, false)
 
-	app.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
-		if event.Key() == tcell.KeyEscape {
-			app.Stop()
-			return nil
-		}
-		return event
-	})
-
-	pages.AddPage("main_menu", layout, true, false)
+	uiManager.AddView("main_menu", layout)
 }

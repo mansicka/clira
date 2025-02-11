@@ -1,4 +1,4 @@
-package views
+package view
 
 import (
 	"fmt"
@@ -7,11 +7,12 @@ import (
 	"github.com/mansicka/rtpms/globals"
 	"github.com/mansicka/rtpms/internal/organization"
 	"github.com/mansicka/rtpms/internal/ui"
+	"github.com/mansicka/rtpms/internal/view/modal"
 	"github.com/rivo/tview"
 )
 
-// ShowCreateOrganizationForm displays the organization creation UI
-func ShowCreateOrganizationForm(app *tview.Application, pages *tview.Pages) {
+// InitCreateOrganizationForm displays the organization creation UI
+func InitCreateOrganizationForm(ui *ui.UIManager) {
 
 	header := tview.NewTextView().
 		SetText(fmt.Sprintf("%s", globals.LogoAndHeaderText+"\n"+globals.CreateOrganizationInfo)).
@@ -26,20 +27,19 @@ func ShowCreateOrganizationForm(app *tview.Application, pages *tview.Pages) {
 		description := strings.TrimSpace(form.GetFormItemByLabel("Description:").(*tview.InputField).GetText())
 
 		if name == "" {
-			ui.ShowErrorModal(app, pages, "Organization name is required!", "create_organization")
-
+			modal.ShowErrorModal(ui, "Organization name is required!")
 		}
 
 		err := organization.SaveOrganization(name, description)
 		if err != nil {
-			ui.ShowErrorModal(app, pages, "Error saving organization", "create_organization")
+			modal.ShowErrorModal(ui, fmt.Sprintf("Error saving organization: %s", err))
 		}
 
-		ShowCreateAdminUserForm(app, pages)
-		pages.SwitchToPage("create_admin_user")
+		//ShowCreateAdminUserForm(app, pages)
+		ui.SwitchToView("create_admin_user")
 	}).
 		AddButton("Cancel", func() {
-			pages.SwitchToPage("main_menu")
+			modal.ShowExitConfirmationModal(ui)
 		}).
 		SetTitle("Create Organization").
 		SetBorder(true)
@@ -49,5 +49,6 @@ func ShowCreateOrganizationForm(app *tview.Application, pages *tview.Pages) {
 		AddItem(header, 16, 1, false).
 		AddItem(form, 0, 1, true)
 
-	pages.AddPage("create_organization", layout, true, false)
+	ui.AddView("create_organization", layout)
+	ui.SwitchToView("create_organization")
 }

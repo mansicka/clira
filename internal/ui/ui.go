@@ -68,6 +68,7 @@ func (ui *UIManager) SwitchToView(name string) {
 }
 
 func (ui *UIManager) GoBack() {
+	log.Print(len(ui.History))
 	if len(ui.History) > 1 {
 		ui.History = ui.History[:len(ui.History)-1]
 		previousView := ui.History[len(ui.History)-1]

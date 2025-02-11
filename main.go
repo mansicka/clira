@@ -9,16 +9,15 @@ import (
 	"github.com/mansicka/rtpms/internal/event"
 	"github.com/mansicka/rtpms/internal/git"
 	"github.com/mansicka/rtpms/internal/organization"
-	"github.com/mansicka/rtpms/internal/state"
 	"github.com/mansicka/rtpms/internal/storage"
 	"github.com/mansicka/rtpms/internal/ui"
-	"github.com/mansicka/rtpms/internal/views"
+	"github.com/mansicka/rtpms/internal/view"
 )
 
 func main() {
 	_ = godotenv.Load()
 
-	rootDir := os.Getenv("CLIRA_ROOTDIR")
+	rootDir := os.Getenv("RTPMS_ROOTDIR")
 
 	if rootDir == "" {
 		panic("ss")
@@ -49,39 +48,28 @@ func main() {
 		log.Panic(err)
 	}
 
-	appState := state.GetState()
-	user := appState.GetUser()
-
 	uiManager := ui.NewUIManager()
 
-	uiManager.AddView("main_menu", views.ShowMainMenu(uiManager.App, uiManager.Pages, uiManager.SwitchToView))
-	uiManager.AddView("create_organization", views.ShowCreateOrganizationForm(uiManager.App, uiManager.Pages, uiManager.SwitchToView))
-	uiManager.AddView("create_admin_user", views.ShowCreateAdminUserForm(uiManager.App, uiManager.Pages, uiManager.SwitchToView))
-	uiManager.AddView("login", views.ShowLoginPrompt(uiManager.App, uiManager.Pages, uiManager.SwitchToView))
-	uiManager.AddView("create_project", views.ShowCreateProjectForm(uiManager.App, uiManager.Pages, uiManager.SwitchToView))
-	uiManager.AddView("edit_project", views.ShowEditProjectForm(uiManager.App, uiManager.Pages, uiManager.SwitchToView))
-	uiManager.AddView("project_list", views.ShowProjectList(uiManager.App, uiManager.Pages, uiManager.SwitchToView))
+	view.InitCreateOrganizationForm(uiManager)
+	view.InitCreateAdminUserForm(uiManager)
+	view.ShowLoginPrompt(uiManager)
 
 	orgData, err := organization.LoadOrganization()
-	if err != nil || orgData == nil {
-		views.ShowCreateOrganizationForm(app, pages)
-		pages.SwitchToPage("create_organization")
+
+	if err != nil {
+		log.Print(err)
+	}
+	if orgData == nil {
+		uiManager.SwitchToView("create_organization")
 	} else {
 		if len(orgData.Admins) == 0 {
-			views.ShowCreateAdminUserForm(app, pages)
-			pages.SwitchToPage("create_admin_user")
-		} else if user == nil {
-			views.ShowLoginPrompt(app, pages)
-			pages.SwitchToPage("login")
+			uiManager.SwitchToView("create_admin_user")
 		} else {
-			views.ShowMainMenu(app, pages)
-			pages.SwitchToPage("main_menu")
+			uiManager.SwitchToView("login")
 		}
 	}
 
-	app.SetRoot(pages, true)
-
-	if err := app.Run(); err != nil {
+	if err := uiManager.Run(); err != nil {
 		log.Fatal(err)
 	}
 }

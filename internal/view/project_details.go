@@ -1,14 +1,16 @@
-package views
+package view
 
 import (
 	"fmt"
 
 	"github.com/mansicka/rtpms/internal/project"
+	"github.com/mansicka/rtpms/internal/ui"
+
 	//"github.com/mansicka/rtpms/internal/state"
 	"github.com/rivo/tview"
 )
 
-func ShowProjectDetails(app *tview.Application, pages *tview.Pages, proj *project.Project) {
+func InitProjectDetails(ui *ui.UIManager, proj *project.Project) {
 	projectInfo := tview.NewTextView().
 		SetDynamicColors(true).
 		SetText(fmt.Sprintf(
@@ -20,10 +22,10 @@ func ShowProjectDetails(app *tview.Application, pages *tview.Pages, proj *projec
 
 	menu := tview.NewList().
 		AddItem("Return to Project List", "", 'r', func() {
-			ShowProjectList(app, pages)
+			InitProjectList(ui)
 		}).
 		AddItem("Exit", "", 'q', func() {
-			app.Stop()
+			ui.App.Stop()
 		})
 
 	layout := tview.NewFlex().
@@ -31,6 +33,5 @@ func ShowProjectDetails(app *tview.Application, pages *tview.Pages, proj *projec
 		AddItem(projectInfo, 0, 1, false).
 		AddItem(menu, 0, 1, true)
 
-	pages.AddPage("project_details", layout, true, true)
-	app.SetRoot(layout, true)
+	ui.AddView("project_details", layout)
 }

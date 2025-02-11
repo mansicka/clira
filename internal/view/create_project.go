@@ -1,14 +1,15 @@
-package views
+package view
 
 import (
 	"log"
 
 	"github.com/mansicka/rtpms/internal/project"
 	"github.com/mansicka/rtpms/internal/ui"
+	"github.com/mansicka/rtpms/internal/view/modal"
 	"github.com/rivo/tview"
 )
 
-func ShowCreateProjectForm(app *tview.Application, pages *tview.Pages) {
+func ShowCreateProjectForm(ui *ui.UIManager) {
 	form := tview.NewForm().
 		AddInputField("Project Name", "", 50, nil, nil).
 		AddInputField("Project Key", "", 10, nil, nil).
@@ -42,16 +43,15 @@ func ShowCreateProjectForm(app *tview.Application, pages *tview.Pages) {
 
 		err := project.SaveProject(newProject)
 		if err != nil {
-			ui.ShowErrorModal(app, pages, "Failed to create project", "create_project")
+			modal.ShowErrorModal(ui, "Failed to create project")
 		}
 
-		ShowProjectList(app, pages)
+		//ShowProjectList(app, pages)
 	}).
 		AddButton("Cancel", func() {
-			ShowProjectList(app, pages)
+			ui.GoBack()
 		})
 
 	form.SetTitle(" Create New Project ").SetBorder(true)
-	pages.AddPage("create_project", form, true, true)
-	app.SetRoot(form, true)
+	ui.AddView("create_project", form)
 }
