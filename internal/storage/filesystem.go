@@ -5,7 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/mansicka/clira/internal/event"
+	"github.com/mansicka/rtpms/internal/event"
 )
 
 type Storage struct {

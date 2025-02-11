@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/mansicka/clira/globals"
-	"github.com/mansicka/clira/internal/organization"
-	"github.com/mansicka/clira/internal/ui"
+	"github.com/mansicka/rtpms/globals"
+	"github.com/mansicka/rtpms/internal/organization"
+	"github.com/mansicka/rtpms/internal/ui"
 	"github.com/rivo/tview"
 )
 

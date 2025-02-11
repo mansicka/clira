@@ -3,11 +3,11 @@ package views
 import (
 	"fmt"
 
-	"github.com/mansicka/clira/globals"
-	"github.com/mansicka/clira/internal/organization"
-	"github.com/mansicka/clira/internal/state"
-	"github.com/mansicka/clira/internal/ui"
-	"github.com/mansicka/clira/internal/user"
+	"github.com/mansicka/rtpms/globals"
+	"github.com/mansicka/rtpms/internal/organization"
+	"github.com/mansicka/rtpms/internal/state"
+	"github.com/mansicka/rtpms/internal/ui"
+	"github.com/mansicka/rtpms/internal/user"
 	"github.com/rivo/tview"
 )
 

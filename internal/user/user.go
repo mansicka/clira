@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/mansicka/clira/internal/storage"
+	"github.com/mansicka/rtpms/internal/storage"
 	"golang.org/x/crypto/bcrypt"
 )
 

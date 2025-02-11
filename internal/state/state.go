@@ -3,8 +3,8 @@ package state
 import (
 	"sync"
 
-	"github.com/mansicka/clira/internal/project"
-	"github.com/mansicka/clira/internal/user"
+	"github.com/mansicka/rtpms/internal/project"
+	"github.com/mansicka/rtpms/internal/user"
 )
 
 // AppState keeps track of global application state

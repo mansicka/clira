@@ -3,9 +3,9 @@ package views
 import (
 	"fmt"
 
-	"github.com/mansicka/clira/internal/project"
-	"github.com/mansicka/clira/internal/state"
-	"github.com/mansicka/clira/internal/ui"
+	"github.com/mansicka/rtpms/internal/project"
+	"github.com/mansicka/rtpms/internal/state"
+	"github.com/mansicka/rtpms/internal/ui"
 	"github.com/rivo/tview"
 )
 

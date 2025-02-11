@@ -1,4 +1,4 @@
-module github.com/mansicka/clira
+module github.com/mansicka/rtpms
 
 go 1.23.4
 

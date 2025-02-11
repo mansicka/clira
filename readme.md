@@ -1,14 +1,17 @@
 ```
-    █ ▄  ▄▄▄ ▗▞▀▜▌
-    █ ▄ █    ▝▚▄▟▌
-▗▞▀▘█ █ █         
-▝▚▄ █ █           
+██████╗ ███████╗██╗██╗     ██╗   ██╗
+██╔══██╗██╔════╝██║██║     ██║   ██║
+██████╔╝█████╗  ██║██║     ██║   ██║
+██╔══██╗██╔══╝  ██║██║     ██║   ██║
+██║  ██║███████╗██║███████╗╚██████╔╝
+╚═╝  ╚═╝╚══════╝╚═╝╚══════╝ ╚═════╝ 
+                                            
                                        
 ```
 
-# Clira - project management & ticketing in terminal
+# Reilu Terminal Project Management Suite
 ## Introduction
-Clira is a terminal application for managing projects. It doesn't use a database, rather it uses Git (via go-git) to track and manage changes in data. The initial premise of the application was to create a terminal application which imitates traditional software development ticketing and workflow systems. 
+Reilu Terminal Project Management Suite is a terminal application for managing projects. It doesn't use a database, rather it uses Git (via go-git) to track and manage changes in data. The initial premise of the application was to create a terminal application which imitates traditional software development ticketing and workflow systems. 
 
 ### Why use Git instead of database?
 _Using Git rather than a database adds a layer of complexity to the development. It's more unituitive to use, and less transparent than a database. So why?_

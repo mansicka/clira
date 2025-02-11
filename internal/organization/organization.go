@@ -7,7 +7,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/mansicka/clira/internal/storage"
+	"github.com/mansicka/rtpms/internal/storage"
 )
 
 // Organization struct holds the organization's data

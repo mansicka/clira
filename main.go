@@ -6,13 +6,13 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
-	"github.com/mansicka/clira/internal/event"
-	"github.com/mansicka/clira/internal/git"
-	"github.com/mansicka/clira/internal/organization"
-	"github.com/mansicka/clira/internal/state"
-	"github.com/mansicka/clira/internal/storage"
-	"github.com/mansicka/clira/internal/ui"
-	"github.com/mansicka/clira/internal/views"
+	"github.com/mansicka/rtpms/internal/event"
+	"github.com/mansicka/rtpms/internal/git"
+	"github.com/mansicka/rtpms/internal/organization"
+	"github.com/mansicka/rtpms/internal/state"
+	"github.com/mansicka/rtpms/internal/storage"
+	"github.com/mansicka/rtpms/internal/ui"
+	"github.com/mansicka/rtpms/internal/views"
 )
 
 func main() {
